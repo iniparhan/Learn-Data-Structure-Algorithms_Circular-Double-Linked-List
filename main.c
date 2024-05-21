@@ -3,7 +3,7 @@
 
 struct Node {
     int data;
-    struct Node* originalAddress;  
+    struct Node* memori_asli;  
     struct Node* next;      
     struct Node* prev;      
 };
@@ -13,7 +13,7 @@ void insertEnd(struct Node** start, int value)
     if (*start == NULL) {
         struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));  
         new_node->data = value;  
-        new_node->originalAddress = new_node;  
+        new_node->memori_asli = new_node;  
         new_node->next = new_node->prev = new_node;  
         *start = new_node;  
         return;
@@ -23,7 +23,7 @@ void insertEnd(struct Node** start, int value)
 
     struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
     new_node->data = value;  
-    new_node->originalAddress = new_node;  
+    new_node->memori_asli = new_node;  
 
     new_node->next = *start;
     (*start)->prev = new_node;
@@ -36,34 +36,34 @@ void display(struct Node* start)
     struct Node* temp = start;
 
     printf("Output\n");
-    printf("Address: %p, Data: %d\n", temp->originalAddress, temp->data);
+    printf("Address: %p, Data: %d\n", temp->memori_asli, temp->data);
     temp = temp->next;
     while (temp != start) {
-        printf("Address: %p, Data: %d\n", temp->originalAddress, temp->data); 
+        printf("Address: %p, Data: %d\n", temp->memori_asli, temp->data); 
         temp = temp->next;
     }
 }
 
 void sort(struct Node** start) {
-    struct Node *tmp, *s, *min;
+    struct Node *temp, *node, *min;
     if (*start == NULL) {  
         printf("List is empty\n");
         return;
     }
-    for (tmp = *start; tmp->next != *start; tmp = tmp->next) {
-        min = tmp;
-        for (s = tmp->next; s != *start; s = s->next) {
-            if (s->data < min->data) {  
-                min = s;  
+    for (temp = *start; temp->next != *start; temp = temp->next) {
+        min = temp;
+        for (node = temp->next; node != *start; node = node->next) {
+            if (node->data < min->data) {  
+                min = node;  
             }
         }
-        if (min != tmp) {  
-            struct Node* temp = tmp->originalAddress;  
-            tmp->originalAddress = min->originalAddress;  
-            min->originalAddress = temp;  
+        if (min != temp) {  
+            struct Node* temp = temp->memori_asli;  
+            temp->memori_asli = min->memori_asli;  
+            min->memori_asli = temp;  
 
-            int tempData = tmp->data;  
-            tmp->data = min->data;  
+            int tempData = temp->data;  
+            temp->data = min->data;  
             min->data = tempData;  
         }
     }
